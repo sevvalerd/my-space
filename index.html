@@ -363,6 +363,176 @@ const defaultCategories = [
 let data = {};
 let customLists = [];
 
+    const NOTION_DATA = {
+    "Beyaz Eşya": [
+        {done:false,product:"Buzdolabı",qty:"1",note:"",brand:"Bosch",link:""},
+        {done:false,product:"Çamaşır Makinesi",qty:"1",note:"",brand:"Bosch",link:""},
+        {done:false,product:"Kurutma Makinesi",qty:"1",note:"",brand:"Bosch",link:""},
+        {done:false,product:"Bulaşık Makinesi",qty:"1",note:"",brand:"Bosch",link:""},
+        {done:false,product:"Ocak",qty:"1",note:"",brand:"Bosch",link:""},
+        {done:false,product:"Fırın",qty:"1",note:"",brand:"Bosch",link:""},
+        {done:false,product:"Mikrodalga",qty:"1",note:"",brand:"Bosch",link:""},
+        {done:false,product:"Derin Dondurucu",qty:"1",note:"",brand:"Bosch",link:""},
+        {done:false,product:"Klima",qty:"2",note:"Salon + Yatak Odası",brand:"Bosch",link:""},
+        {done:false,product:"Vantilatör",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"Mini Bar",qty:"1",note:"Yatak Odası",brand:"",link:""},
+        {done:false,product:"Davlumbaz",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"Su Sebili",qty:"2",note:"Yatak Odası+Mutfak",brand:"",link:"https://www.mediamarkt.com.tr/"},
+        {done:false,product:"Televizyon",qty:"",note:"",brand:"",link:"https://www.mediamarkt.com.tr/"}
+    ],
+
+    "Mobilya": [
+        {done:false,product:"L - Koltuk",qty:"1",note:"",brand:"Normod",link:""},
+        {done:false,product:"Zigon Sehpa",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"Orta Sehpa",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"TV Konsol",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"Yemek Masası",qty:"1",note:"",brand:"Vornom",link:""},
+        {done:false,product:"Sandalye",qty:"4",note:"",brand:"",link:""},
+        {done:false,product:"Konsol/Bar",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"Yatak",qty:"1",note:"",brand:"Hipicon",link:""},
+        {done:false,product:"Baza",qty:"1",note:"",brand:"Hipicon",link:""},
+        {done:false,product:"Başlık",qty:"1",note:"",brand:"Hipicon",link:""},
+        {done:false,product:"Komodin",qty:"2",note:"",brand:"",link:""},
+        {done:false,product:"Şifonyer",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"Giyinme Dolabı",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"Kitaplık",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"Berjer",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"Balkona Sandalye",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Balkona Küçük Masa / Sehpa",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Ayakkabılık",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Çalışma Masası",qty:"2",note:"",brand:"",link:""}
+    ],
+
+    "Mutfak Gereçleri": [
+        {done:false,product:"Tencere Seti",qty:"",note:"",brand:"Tefal",link:""},
+        {done:false,product:"Tava Seti",qty:"",note:"",brand:"Tefal",link:""},
+        {done:false,product:"Borcam Seti",qty:"",note:"",brand:"Borcam",link:""},
+        {done:false,product:"Saklama Kabı",qty:"",note:"",brand:"İkea",link:""},
+        {done:false,product:"Rende",qty:"",note:"",brand:"İkea",link:""},
+        {done:false,product:"Kaşık-Çatal-Bıçak Seti",qty:"",note:"",brand:"Karaca",link:""},
+        {done:false,product:"Yemek Takımı",qty:"",note:"",brand:"Karaca",link:""},
+        {done:false,product:"Kahvaltı Takımı",qty:"",note:"",brand:"Karaca",link:""},
+        {done:false,product:"Servis Takımı",qty:"",note:"",brand:"Karaca",link:""},
+        {done:false,product:"Kesme Tahtası ( Ahşap/Çelik/Cam)",qty:"3",note:"",brand:"",link:""},
+        {done:false,product:"Bıçak Seti 24 Parça",qty:"",note:"",brand:"Tefal",link:""},
+        {done:false,product:"Su Bardağı",qty:"",note:"",brand:"Paşabahçe/Lav",link:""},
+        {done:false,product:"Çay Bardağı",qty:"",note:"",brand:"Paşabahçe/Lav",link:""},
+        {done:false,product:"Kahve Fincanı",qty:"",note:"",brand:"Madame Coco/English Home",link:""},
+        {done:false,product:"Süzgeç",qty:"",note:"",brand:"İkea",link:""},
+        {done:false,product:"Karıştırma Kabı",qty:"",note:"",brand:"İkea",link:""},
+        {done:false,product:"Kepçe-Maşa-Spatula",qty:"",note:"",brand:"İkea",link:""},
+        {done:false,product:"Düdüklü Tencere",qty:"",note:"",brand:"Tefal",link:""},
+        {done:false,product:"Sarımsak Ezici",qty:"",note:"",brand:"İkea",link:""},
+        {done:false,product:"Browni Kabı",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Kek Kalıbı",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Soyacak",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Açacak",qty:"",note:"",brand:"",link:""}
+    ],
+
+    "Küçük Ev Aletleri": [
+        {done:false,product:"Süpürge",qty:"1",note:"",brand:"Philips",link:""},
+        {done:false,product:"Robot Süpürge",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"Ütü",qty:"1",note:"",brand:"Philips",link:""},
+        {done:false,product:"Hava Temizleyici",qty:"1",note:"",brand:"Philips",link:""},
+        {done:false,product:"Saç Kurutma Makinesi",qty:"1",note:"",brand:"Philips",link:""},
+        {done:false,product:"Kettle",qty:"1",note:"",brand:"Philips",link:""},
+        {done:false,product:"Tost Makinesi",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"Blender",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"Stand Mixer",qty:"1",note:"",brand:"Bosch",link:""},
+        {done:false,product:"Portakal Sıkacağı",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"Kahve Makinesi",qty:"1",note:"",brand:"Philips",link:""},
+        {done:false,product:"Türk Kahvesi Makinesi",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"Airfryer",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"Ekmek Kızartma Makinesi",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"Elektrikli Izgara",qty:"1",note:"",brand:"",link:""}
+    ],
+
+    "Aydınlatma": [
+        {done:false,product:"Salon Avize",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"Salon Abajur",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"Yatak Odası Avize",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"Yatak Başı Abajur",qty:"2",note:"",brand:"",link:""},
+        {done:false,product:"Mutfak Tavan",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"WC Tavan",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"Koridor",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"Giyinme Odası Spot",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"Kitaplık Spot",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"Çerçeve Dekoratif",qty:"1",note:"",brand:"",link:""}
+    ],
+
+    "Aksesuar": [
+        {done:false,product:"Saksı",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Çerçeve",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Sabunluk",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Ayna",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Boy aynası",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Saat",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Kırlent",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Bitki",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Mum",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Ses Sistemi",qty:"",note:"",brand:"",link:""}
+    ],
+
+    "Halı": [
+        {done:false,product:"Salon Halısı",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Mutfak Kilimi",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Yatak Odası Halısı",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Koridorlara Yolluk",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"WC Paspas",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Kitaplık Önü Kilim",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Balkon İçin Kilim",qty:"",note:"",brand:"",link:""}
+    ],
+
+    "Perde": [
+        {done:false,product:"Salon Tül+Fon",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Yatak Odası Blackout",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Giyinme Odası Jaluzi",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Kitaplık Jaluzi",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Mutfak Jaluzi",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Sineklik",qty:"",note:"Dış Kapı ve Pencerelere",brand:"",link:""}
+    ],
+
+    "Tekstil": [
+        {done:false,product:"Nevresim Takımı",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Yorgan",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Yastık",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Alez",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"El Havlusu",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Ayak Havlusu",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Banyo Havlusu",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Mutfak Havlusu",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Yatak Örtüsü",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"Battaniye",qty:"",note:"",brand:"",link:""}
+    ],
+
+    "Demirbaş": [
+        {done:false,product:"Ütü Masası",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"Çamaşırlık",qty:"2",note:"",brand:"",link:""},
+        {done:false,product:"Vileda/Mop",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"Çamaşır Sepeti",qty:"2",note:"",brand:"",link:""},
+        {done:false,product:"WC Çöp Kovası",qty:"3",note:"",brand:"",link:""},
+        {done:false,product:"Mutfak Çöp Kovası",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"Paspas",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"Buharlı Elektirikli Süpürke",qty:"1",note:"",brand:"",link:""}
+    ],
+
+    "Kamp": [
+        {done:false,product:"Çadır",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"Z-Mat",qty:"2",note:"",brand:"",link:""},
+        {done:false,product:"Uyku Tulumu",qty:"2",note:"",brand:"",link:""},
+        {done:false,product:"Hamak",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"semaver",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"ocek",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"Çadır Altı Hasır",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"termos 1.5 L",qty:"1",note:"",brand:"",link:""},
+        {done:false,product:"kamp seti",qty:"2",note:"",brand:"",link:""},
+        {done:false,product:"kamp sandalyesi",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"kamp masası",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"isveç çakısı",qty:"",note:"",brand:"",link:""},
+        {done:false,product:"OUTDOOR AYAKKABI",qty:"",note:"",brand:"",link:""}
+    ]
+};
+    
 let currentUser = null;
 
 console.log("CURRENT USER:", currentUser);
