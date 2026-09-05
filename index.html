@@ -928,6 +928,8 @@ function showAuthenticatedApp(user){
     document.querySelector(".app").style.display = "flex";
 
     console.log("Giriş yapan kullanıcı:", user.email);
+
+    showHome();
 }
 async function checkAuth() {
     const { data: { session } } = await supabaseClient.auth.getSession();
