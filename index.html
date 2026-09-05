@@ -626,6 +626,277 @@ updateSidebar();
 showHome();
 
 </script>
+<!-- LOGIN SCREEN -->
+<style>
+.login-screen{
+    position:fixed;
+    inset:0;
+    background:#f7f7f5;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+}
 
+.login-box{
+    width:400px;
+    max-width:90%;
+    background:white;
+    border:1px solid #e5e5e1;
+    border-radius:18px;
+    padding:38px;
+    box-shadow:0 20px 60px rgba(0,0,0,.08);
+}
+
+.login-logo{
+    font-size:28px;
+    font-weight:700;
+    letter-spacing:-1px;
+    margin-bottom:8px;
+}
+
+.login-subtitle{
+    color:#999;
+    margin-bottom:30px;
+}
+
+.login-box input{
+    width:100%;
+    padding:13px 14px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    margin-bottom:12px;
+    outline:none;
+}
+
+.login-box input:focus{
+    border-color:#999;
+}
+
+.login-button{
+    width:100%;
+    padding:13px;
+    border:0;
+    border-radius:8px;
+    background:#222;
+    color:white;
+    font-weight:600;
+    cursor:pointer;
+    margin-top:5px;
+}
+
+.login-button:hover{
+    background:#333;
+}
+
+.login-switch{
+    border:0;
+    background:transparent;
+    color:#777;
+    width:100%;
+    margin-top:18px;
+    cursor:pointer;
+}
+
+.login-message{
+    margin-top:15px;
+    font-size:13px;
+    color:#777;
+    line-height:1.5;
+}
+
+.logout-button{
+    border:0;
+    background:transparent;
+    color:#888;
+    cursor:pointer;
+    font-size:13px;
+}
+</style>
+
+<div class="login-screen" id="loginScreen">
+    <div class="login-box">
+
+        <div class="login-logo">MY SPACE</div>
+
+        <div class="login-subtitle" id="loginSubtitle">
+            Kişisel alanına giriş yap
+        </div>
+
+        <input
+            type="email"
+            id="authEmail"
+            placeholder="E-posta adresin"
+            autocomplete="email"
+        >
+
+        <input
+            type="password"
+            id="authPassword"
+            placeholder="Şifre"
+            autocomplete="current-password"
+        >
+
+        <button
+            class="login-button"
+            id="authButton"
+            onclick="handleAuth()"
+        >
+            Giriş Yap
+        </button>
+
+        <button
+            class="login-switch"
+            id="authSwitch"
+            onclick="toggleAuthMode()"
+        >
+            Hesabın yok mu? Kayıt ol
+        </button>
+
+        <div
+            class="login-message"
+            id="authMessage"
+        ></div>
+
+    </div>
+</div>
+
+<script>
+    
+let authMode = "login";
+
+function toggleAuthMode(){
+
+    authMode = authMode === "login" ? "signup" : "login";
+
+    const button = document.getElementById("authButton");
+    const subtitle = document.getElementById("loginSubtitle");
+    const switchButton = document.getElementById("authSwitch");
+    const message = document.getElementById("authMessage");
+
+    message.textContent = "";
+
+    if(authMode === "signup"){
+
+        subtitle.textContent = "Yeni hesabını oluştur";
+
+        button.textContent = "Kayıt Ol";
+
+        switchButton.textContent =
+            "Zaten hesabın var mı? Giriş yap";
+
+    }else{
+
+        subtitle.textContent = "Kişisel alanına giriş yap";
+
+        button.textContent = "Giriş Yap";
+
+        switchButton.textContent =
+            "Hesabın yok mu? Kayıt ol";
+    }
+}
+
+async function handleAuth(){
+
+    const email =
+        document.getElementById("authEmail").value.trim();
+
+    const password =
+        document.getElementById("authPassword").value;
+
+    const message =
+        document.getElementById("authMessage");
+
+    if(!email || !password){
+
+        message.textContent =
+            "Lütfen e-posta ve şifre alanlarını doldur.";
+
+        return;
+    }
+
+    message.textContent = "İşlem yapılıyor...";
+
+    if(authMode === "signup"){
+
+        const { data, error } =
+            await supabaseClient.auth.signUp({
+                email: email,
+                password: password
+            });
+
+        if(error){
+
+            message.textContent = error.message;
+            return;
+        }
+
+        message.textContent =
+            "Kayıt başarılı! E-posta adresine gelen doğrulama bağlantısına tıkla.";
+
+    }else{
+
+        const { data, error } =
+            await supabaseClient.auth.signInWithPassword({
+                email: email,
+                password: password
+            });
+
+        if(error){
+
+            message.textContent = error.message;
+            return;
+        }
+
+        showAuthenticatedApp(data.user);
+    }
+}
+
+function showAuthenticatedApp(user){
+
+    document.getElementById("loginScreen").style.display = "none";
+
+    document.querySelector(".app").style.display = "flex";
+
+    console.log("Giriş yapan kullanıcı:", user.email);
+}
+
+async function checkAuth(){
+
+    const {
+        data: { session }
+    } = await supabaseClient.auth.getSession();
+
+    if(session){
+
+        showAuthenticatedApp(session.user);
+
+    }else{
+
+        document.querySelector(".app").style.display = "none";
+
+        document.getElementById("loginScreen").style.display = "flex";
+    }
+}
+
+supabaseClient.auth.onAuthStateChange(
+    (event, session) => {
+
+        if(session){
+
+            showAuthenticatedApp(session.user);
+
+        }else{
+
+            document.querySelector(".app").style.display = "none";
+
+            document.getElementById("loginScreen").style.display = "flex";
+        }
+    }
+);
+
+checkAuth();
+</script>
+    
 </body>
 </html>
