@@ -914,13 +914,21 @@ async function handleAuth(){
 
 function showAuthenticatedApp(user){
 
+    if (!user) {
+        user = currentUser;
+    }
+
+    if (!user) {
+        console.error("Kullanıcı bilgisi bulunamadı.");
+        return;
+    }
+
     document.getElementById("loginScreen").style.display = "none";
 
     document.querySelector(".app").style.display = "flex";
 
     console.log("Giriş yapan kullanıcı:", user.email);
 }
-
 async function checkAuth() {
     const { data: { session } } = await supabaseClient.auth.getSession();
 
