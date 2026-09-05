@@ -652,6 +652,41 @@ async function save() {
     }, 300);
 }
 
+function showYuvamiz(){
+
+    let html = `
+        <div class="topbar">
+            <div>
+                <div class="page-title">Yuvamız</div>
+                <div class="subtitle">Ev ihtiyaçlarını ve listelerini düzenle</div>
+            </div>
+
+            <div class="top-actions">
+                <button class="btn" onclick="showHome()">← Ana Sayfa</button>
+            </div>
+        </div>
+
+        <div class="cards">
+    `;
+
+    defaultCategories.forEach(cat => {
+
+        let count = data[cat.name]?.length || 0;
+
+        html += `
+            <div class="card" onclick="openCategory('${cat.name}')">
+                <div class="card-icon">${cat.icon}</div>
+                <div class="card-name">${cat.name}</div>
+                <div class="card-count">${count} madde</div>
+            </div>
+        `;
+    });
+
+    html += `</div>`;
+
+    document.getElementById("content").innerHTML = html;
+}
+    
 function showHome(){
 
     let html = `
@@ -697,6 +732,11 @@ function showHome(){
 }
 
 function openCategory(name){
+   
+    if(name === "Yuvamız"){
+    showYuvamiz();
+    return;
+}
 
     if(!data[name]) data[name]=[];
 
