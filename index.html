@@ -1253,7 +1253,9 @@ async function checkAuth() {
         currentUser = session.user;
 
         await loadUserData();
-
+        
+        updateSidebar();
+        
         showAuthenticatedApp(session.user);
     } else {
         currentUser = null;
@@ -1269,6 +1271,8 @@ supabaseClient.auth.onAuthStateChange(
            currentUser = session.user;
 
            await loadUserData();
+            
+            updateSidebar();
 
            showAuthenticatedApp(session.user);
 
