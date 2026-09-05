@@ -929,7 +929,7 @@ async function checkAuth() {
 
         await loadUserData();
 
-        showAuthenticatedApp();
+        showAuthenticatedApp(session.user);
     } else {
         currentUser = null;
         showLoginScreen();
@@ -941,11 +941,11 @@ supabaseClient.auth.onAuthStateChange(
 
         if (session) {
 
-            currentUser = session.user;
+           currentUser = session.user;
 
-            await loadUserData();
+           await loadUserData();
 
-            showAuthenticatedApp();
+           showAuthenticatedApp(session.user);
 
         } else {
 
