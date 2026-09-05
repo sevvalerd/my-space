@@ -370,6 +370,7 @@ console.log("CURRENT USER:", currentUser);
 let saveTimer = null;
 
 async function loadUserData() {
+
     if (!currentUser) return;
 
     const { data: result, error } = await supabaseClient
@@ -384,11 +385,21 @@ async function loadUserData() {
     }
 
     if (result && result.data) {
-        data = result.data.data || {};
-        customLists = result.data.customLists || [];
+
+        const savedData = result.data;
+
+        data = savedData.data || {};
+        customLists = savedData.customLists || [];
+
+        console.log("Supabase verileri yüklendi:", data);
+        console.log("Beyaz Eşya:", data["Beyaz Eşya"]);
+
     } else {
+
         data = {};
         customLists = [];
+
+        console.log("Kullanıcı için kayıtlı veri bulunamadı.");
     }
 }
 
