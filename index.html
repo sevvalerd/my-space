@@ -657,20 +657,28 @@ function showHome(){
     let html = `
         <div class="topbar">
             <div>
-                <div class="page-title">Yuvamız</div>
-                <div class="subtitle">Ev ihtiyaçlarını ve listelerini düzenle</div>
+                <div class="page-title">Ana Sayfa</div>
+                <div class="subtitle">My Space'e hoş geldin 👋</div>
             </div>
 
             <div class="top-actions">
-                <button class="btn" onclick="openAddList()">＋ Yeni liste</button>
-                <button class="btn" onclick="importNotionData()">↗ Notion verilerini aktar</button>
+                <button class="btn" onclick="openAddList()">＋ Yeni Sayfa</button>
             </div>
         </div>
 
         <div class="cards">
-    `;
 
-    defaultCategories.forEach(cat=>{
+            <div class="card" onclick="openCategory('Yuvamız')">
+                <div class="card-icon">🏠</div>
+                <div class="card-name">Yuvamız</div>
+                <div class="card-count">
+                    ${Object.values(data).reduce((total, list) =>
+                        total + (Array.isArray(list) ? list.length : 0), 0)} madde
+                </div>
+            </div>
+`;
+
+    defaultCategories.forEach(cat => {
 
         let count = data[cat.name]?.length || 0;
 
