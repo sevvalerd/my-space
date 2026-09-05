@@ -532,6 +532,47 @@ let customLists = [];
         {done:false,product:"OUTDOOR AYAKKABI",qty:"",note:"",brand:"",link:""}
     ]
 };
+
+    async function importNotionData() {
+    if (!currentUser) {
+        alert("Önce giriş yapmalısın.");
+        return;
+    }
+
+    if (!confirm("Notion'daki 135 ürün mevcut listelerine aktarılacak. Devam edilsin mi?")) {
+        return;
+    }
+
+    data = JSON.parse(JSON.stringify(NOTION_DATA));
+
+    const saveData = {
+        data: data,
+        customLists: customLists
+    };
+
+    const { error } = await supabaseClient
+        .from("user_data")
+        .upsert(
+            {
+                user_id: currentUser.id,
+                data: saveData,
+                updated_at: new Date().toISOString()
+            },
+            {
+                onConflict: "user_id"
+            }
+        );
+
+    if (error) {
+        console.error("IMPORT HATASI:", error);
+        alert("Aktarım başarısız: " + error.message);
+        return;
+    }
+
+    alert("Notion verileri başarıyla aktarıldı! 🎉");
+
+    showHome();
+}
     
 let currentUser = null;
 
