@@ -360,14 +360,56 @@ const defaultCategories = [
     {name:"Demirbaş",icon:"📦"}
 ];
 
-let data = JSON.parse(localStorage.getItem("mySpaceData")) || {};
+let data = {};
+let customLists = [];
 
-let customLists =
-    JSON.parse(localStorage.getItem("mySpaceLists")) || [];
+let currentUser = null;
+let saveTimer = null;
 
-function save(){
-    localStorage.setItem("mySpaceData",JSON.stringify(data));
-    localStorage.setItem("mySpaceLists",JSON.stringify(customLists));
+async function loadUserData() {
+    if (!currentUser) return;
+
+    const { data: result, error } = await supabaseClient
+        .from("user_data")
+        .select("data")
+        .eq("user_id", currentUser.id)
+        .maybeSingle();
+
+    if (error) {
+        console.error("Veriler yüklenemedi:", error);
+        return;
+    }
+
+    if (result && result.data) {
+        data = result.data.data || {};
+        customLists = result.data.customLists || [];
+    } else {
+        data = {};
+        customLists = [];
+    }
+}
+
+async function save() {
+    if (!currentUser) return;
+
+    clearTimeout(saveTimer);
+
+    saveTimer = setTimeout(async () => {
+        const { error } = await supabaseClient
+            .from("user_data")
+            .upsert({
+                user_id: currentUser.id,
+                data: {
+                    data: data,
+                    customLists: customLists
+                },
+                updated_at: new Date().toISOString()
+            });
+
+        if (error) {
+            console.error("Veriler kaydedilemedi:", error);
+        }
+    }, 300);
 }
 
 function showHome(){
@@ -861,32 +903,35 @@ function showAuthenticatedApp(user){
     console.log("Giriş yapan kullanıcı:", user.email);
 }
 
-async function checkAuth(){
+async function checkAuth() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
 
-    const {
-        data: { session }
-    } = await supabaseClient.auth.getSession();
+    if (session) {
+        currentUser = session.user;
 
-    if(session){
+        await loadUserData();
 
-        showAuthenticatedApp(session.user);
-
-    }else{
-
-        document.querySelector(".app").style.display = "none";
-
-        document.getElementById("loginScreen").style.display = "flex";
+        showAuthenticatedApp();
+    } else {
+        currentUser = null;
+        showLoginScreen();
     }
 }
 
 supabaseClient.auth.onAuthStateChange(
-    (event, session) => {
+    async (event, session) => {
 
-        if(session){
+        if (session) {
 
-            showAuthenticatedApp(session.user);
+            currentUser = session.user;
 
-        }else{
+            await loadUserData();
+
+            showAuthenticatedApp();
+
+        } else {
+
+            currentUser = null;
 
             document.querySelector(".app").style.display = "none";
 
