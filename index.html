@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Space</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:#f7f7f5;
+    color:#262626;
+}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+
+.app{
+    display:flex;
+    min-height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+    width:245px;
+    background:#fff;
+    border-right:1px solid #e8e8e5;
+    padding:22px 14px;
+    position:fixed;
+    top:0;
+    bottom:0;
+    left:0;
+}
+
+.logo{
+    font-size:21px;
+    font-weight:700;
+    padding:8px 10px 25px;
+    letter-spacing:-.5px;
+}
+
+.nav-title{
+    font-size:11px;
+    color:#999;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    padding:12px 10px 7px;
+}
+
+.nav-item{
+    width:100%;
+    border:0;
+    background:transparent;
+    text-align:left;
+    padding:9px 10px;
+    border-radius:7px;
+    margin-bottom:2px;
+    color:#444;
+}
+
+.nav-item:hover,
+.nav-item.active{
+    background:#f0f0ed;
+}
+
+.add-list{
+    margin-top:12px;
+    color:#777;
+}
+
+/* CONTENT */
+.content{
+    margin-left:245px;
+    width:calc(100% - 245px);
+    min-height:100vh;
+    padding:45px 55px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:35px;
+}
+
+.page-title{
+    font-size:34px;
+    font-weight:700;
+    letter-spacing:-1px;
+}
+
+.subtitle{
+    color:#999;
+    margin-top:5px;
+}
+
+.top-actions{
+    display:flex;
+    gap:8px;
+}
+
+.btn{
+    border:1px solid #ddd;
+    background:white;
+    padding:9px 15px;
+    border-radius:7px;
+    color:#444;
+}
+
+.btn:hover{background:#f4f4f2}
+
+.btn.primary{
+    background:#222;
+    color:white;
+    border-color:#222;
+}
+
+/* CARDS */
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
+    gap:14px;
+}
+
+.card{
+    background:white;
+    border:1px solid #e7e7e3;
+    border-radius:12px;
+    padding:22px;
+    min-height:120px;
+    transition:.15s;
+    cursor:pointer;
+}
+
+.card:hover{
+    transform:translateY(-2px);
+    box-shadow:0 5px 18px rgba(0,0,0,.06);
+}
+
+.card-icon{
+    font-size:25px;
+    margin-bottom:18px;
+}
+
+.card-name{
+    font-weight:600;
+    font-size:16px;
+}
+
+.card-count{
+    color:#999;
+    font-size:13px;
+    margin-top:7px;
+}
+
+/* TABLE */
+.back{
+    border:0;
+    background:transparent;
+    padding:0;
+    color:#777;
+    margin-bottom:18px;
+}
+
+.table-wrap{
+    background:white;
+    border:1px solid #e5e5e1;
+    border-radius:10px;
+    overflow:auto;
+}
+
+table{
+    border-collapse:collapse;
+    width:100%;
+    min-width:750px;
+}
+
+th{
+    text-align:left;
+    background:#fafaf8;
+    color:#888;
+    font-size:12px;
+    font-weight:500;
+    padding:12px 14px;
+    border-bottom:1px solid #e5e5e1;
+}
+
+td{
+    padding:4px 8px;
+    border-bottom:1px solid #eee;
+}
+
+td input{
+    border:0;
+    outline:0;
+    background:transparent;
+    width:100%;
+    padding:9px 6px;
+}
+
+td input:focus{
+    background:#f7f7f5;
+    border-radius:5px;
+}
+
+.checkbox{
+    width:18px!important;
+    height:18px;
+}
+
+.delete{
+    border:0;
+    background:transparent;
+    color:#bbb;
+    font-size:18px;
+}
+
+.delete:hover{color:#d55}
+
+.add-row{
+    border:0;
+    background:white;
+    color:#888;
+    padding:13px;
+    width:100%;
+    text-align:left;
+}
+
+.add-row:hover{
+    background:#fafaf8;
+}
+
+/* MODAL */
+.modal-bg{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.25);
+    align-items:center;
+    justify-content:center;
+    z-index:20;
+}
+
+.modal{
+    width:420px;
+    background:white;
+    border-radius:12px;
+    padding:25px;
+    box-shadow:0 20px 60px rgba(0,0,0,.18);
+}
+
+.modal h2{
+    margin-top:0;
+}
+
+.modal input{
+    width:100%;
+    border:1px solid #ddd;
+    padding:11px;
+    border-radius:7px;
+    outline:0;
+    margin:12px 0 20px;
+}
+
+.modal-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:8px;
+}
+
+/* MOBILE */
+@media(max-width:700px){
+    .sidebar{
+        width:190px;
+    }
+
+    .content{
+        margin-left:190px;
+        width:calc(100% - 190px);
+        padding:30px 20px;
+    }
+
+    .page-title{
+        font-size:27px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<aside class="sidebar">
+
+    <div class="logo">MY SPACE</div>
+
+    <div class="nav-title">Alanlar</div>
+
+    <button class="nav-item active" onclick="showHome()">🏠 Yuvamız</button>
+    <button class="nav-item" onclick="openCategory('Kamp')">⛺ Kamp</button>
+
+    <div class="nav-title">Listeler</div>
+
+    <div id="customLists"></div>
+
+    <button class="nav-item add-list" onclick="openAddList()">
+        ＋ Yeni liste
+    </button>
+
+</aside>
+
+
+<main class="content" id="content"></main>
+
+</div>
+
+
+<!-- ADD LIST MODAL -->
+
+<div class="modal-bg" id="modal">
+    <div class="modal">
+        <h2>Yeni liste</h2>
+        <input id="listName" placeholder="Örn. Ev Alışverişi">
+
+        <div class="modal-actions">
+            <button class="btn" onclick="closeModal()">İptal</button>
+            <button class="btn primary" onclick="createList()">Oluştur</button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+const defaultCategories = [
+    {name:"Beyaz Eşya",icon:"🧊"},
+    {name:"Mobilya",icon:"🛋️"},
+    {name:"Mutfak Gereçleri",icon:"🍽️"},
+    {name:"Küçük Ev Aletleri",icon:"☕"},
+    {name:"Aydınlatma",icon:"💡"},
+    {name:"Aksesuar",icon:"🪴"},
+    {name:"Halı",icon:"▦"},
+    {name:"Perde",icon:"▥"},
+    {name:"Tekstil",icon:"🧺"},
+    {name:"Demirbaş",icon:"📦"}
+];
+
+let data = JSON.parse(localStorage.getItem("mySpaceData")) || {};
+
+let customLists =
+    JSON.parse(localStorage.getItem("mySpaceLists")) || [];
+
+function save(){
+    localStorage.setItem("mySpaceData",JSON.stringify(data));
+    localStorage.setItem("mySpaceLists",JSON.stringify(customLists));
+}
+
+function showHome(){
+
+    let html = `
+        <div class="topbar">
+            <div>
+                <div class="page-title">Yuvamız</div>
+                <div class="subtitle">Ev ihtiyaçlarını ve listelerini düzenle</div>
+            </div>
+
+            <div class="top-actions">
+                <button class="btn" onclick="openAddList()">＋ Yeni liste</button>
+            </div>
+        </div>
+
+        <div class="cards">
+    `;
+
+    defaultCategories.forEach(cat=>{
+
+        let count = data[cat.name]?.length || 0;
+
+        html += `
+            <div class="card" onclick="openCategory('${cat.name}')">
+                <div class="card-icon">${cat.icon}</div>
+                <div class="card-name">${cat.name}</div>
+                <div class="card-count">${count} madde</div>
+            </div>
+        `;
+    });
+
+    html += `</div>`;
+
+    document.getElementById("content").innerHTML = html;
+}
+
+function openCategory(name){
+
+    if(!data[name]) data[name]=[];
+
+    save();
+
+    let rows = data[name];
+
+    let html = `
+        <button class="back" onclick="showHome()">← Yuvamız</button>
+
+        <div class="topbar">
+            <div>
+                <div class="page-title">${name}</div>
+                <div class="subtitle">${rows.length} madde</div>
+            </div>
+
+            <div class="top-actions">
+                <button class="btn primary" onclick="addRow('${name}')">
+                    ＋ Yeni madde
+                </button>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+
+        <table>
+
+        <thead>
+            <tr>
+                <th style="width:45px">✓</th>
+                <th>Ürün</th>
+                <th style="width:90px">Adet</th>
+                <th>Açıklama</th>
+                <th>Marka</th>
+                <th>Link</th>
+                <th style="width:45px"></th>
+            </tr>
+        </thead>
+
+        <tbody>
+    `;
+
+    rows.forEach((row,i)=>{
+
+        html += `
+            <tr>
+
+                <td>
+                    <input
+                        class="checkbox"
+                        type="checkbox"
+                        ${row.done ? "checked":""}
+                        onchange="updateRow('${name}',${i},'done',this.checked)"
+                    >
+                </td>
+
+                <td>
+                    <input
+                        value="${escapeHTML(row.product||"")}"
+                        placeholder="Ürün adı"
+                        onchange="updateRow('${name}',${i},'product',this.value)"
+                    >
+                </td>
+
+                <td>
+                    <input
+                        type="number"
+                        min="0"
+                        value="${row.qty||""}"
+                        placeholder="1"
+                        onchange="updateRow('${name}',${i},'qty',this.value)"
+                    >
+                </td>
+
+                <td>
+                    <input
+                        value="${escapeHTML(row.note||"")}"
+                        placeholder="Açıklama"
+                        onchange="updateRow('${name}',${i},'note',this.value)"
+                    >
+                </td>
+
+                <td>
+                    <input
+                        value="${escapeHTML(row.brand||"")}"
+                        placeholder="Marka"
+                        onchange="updateRow('${name}',${i},'brand',this.value)"
+                    >
+                </td>
+
+                <td>
+                    <input
+                        value="${escapeHTML(row.link||"")}"
+                        placeholder="https://..."
+                        onchange="updateRow('${name}',${i},'link',this.value)"
+                    >
+                </td>
+
+                <td>
+                    <button class="delete" onclick="deleteRow('${name}',${i})">
+                        ×
+                    </button>
+                </td>
+
+            </tr>
+        `;
+
+    });
+
+    html += `
+        </tbody>
+        </table>
+
+        <button class="add-row" onclick="addRow('${name}')">
+            ＋ Yeni madde ekle
+        </button>
+
+        </div>
+    `;
+
+    document.getElementById("content").innerHTML = html;
+}
+
+function addRow(name){
+
+    if(!data[name]) data[name]=[];
+
+    data[name].push({
+        done:false,
+        product:"",
+        qty:"",
+        note:"",
+        brand:"",
+        link:""
+    });
+
+    save();
+    openCategory(name);
+}
+
+function updateRow(name,index,key,value){
+
+    data[name][index][key]=value;
+
+    save();
+}
+
+function deleteRow(name,index){
+
+    if(confirm("Bu madde silinsin mi?")){
+
+        data[name].splice(index,1);
+
+        save();
+
+        openCategory(name);
+    }
+}
+
+function openAddList(){
+
+    document.getElementById("modal").style.display="flex";
+
+    document.getElementById("listName").focus();
+}
+
+function closeModal(){
+
+    document.getElementById("modal").style.display="none";
+
+    document.getElementById("listName").value="";
+}
+
+function createList(){
+
+    let name =
+        document.getElementById("listName").value.trim();
+
+    if(!name) return;
+
+    if(!customLists.includes(name)){
+        customLists.push(name);
+    }
+
+    if(!data[name]) data[name]=[];
+
+    save();
+
+    updateSidebar();
+
+    closeModal();
+
+    openCategory(name);
+}
+
+function updateSidebar(){
+
+    document.getElementById("customLists").innerHTML =
+        customLists.map(name=>`
+            <button class="nav-item"
+                onclick="openCategory('${name}')">
+                📋 ${escapeHTML(name)}
+            </button>
+        `).join("");
+}
+
+function escapeHTML(text){
+
+    return String(text)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+}
+
+updateSidebar();
+showHome();
+
+</script>
+
+</body>
+</html>
