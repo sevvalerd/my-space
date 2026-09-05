@@ -722,14 +722,24 @@ function showHome(){
      */
     customLists.forEach(name => {
 
-        html += `
-            <div class="card" onclick="openCategory('${escapeHTML(name)}')">
+    html += `
+        <div class="card page-card">
+
+            <div class="card-menu">
+                <button onclick="event.stopPropagation(); deleteList('${escapeHTML(name)}')">
+                    ⋯
+                </button>
+            </div>
+
+            <div onclick="openCategory('${escapeHTML(name)}')">
                 <div class="card-icon">📄</div>
                 <div class="card-name">${escapeHTML(name)}</div>
             </div>
-        `;
 
-    });
+        </div>
+    `;
+
+});
 
     html += `
         </div>
@@ -901,7 +911,35 @@ function deleteRow(name,index){
         openCategory(name);
     }
 }
+    function deleteList(name){
 
+    if(name === "Yuvamız" || name === "Kamp"){
+        alert("Bu sayfa silinemez.");
+        return;
+    }
+
+    if(!customLists.includes(name)){
+        alert("Bu sayfa silinemiyor.");
+        return;
+    }
+
+    if(!confirm(
+        '"' + name + '" sayfası ve içindeki tüm maddeler silinecek. Devam edilsin mi?'
+    )){
+        return;
+    }
+
+    customLists = customLists.filter(item => item !== name);
+
+    delete data[name];
+
+    save();
+
+    updateSidebar();
+
+    showHome();
+}
+    
 function openAddList(){
 
     document.getElementById("modal").style.display="flex";
