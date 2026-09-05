@@ -669,19 +669,6 @@ function showYuvamiz(){
         <div class="cards">
     `;
 
-    defaultCategories.forEach(cat => {
-
-        let count = data[cat.name]?.length || 0;
-
-        html += `
-            <div class="card" onclick="openCategory('${cat.name}')">
-                <div class="card-icon">${cat.icon}</div>
-                <div class="card-name">${cat.name}</div>
-                <div class="card-count">${count} madde</div>
-            </div>
-        `;
-    });
-
     html += `</div>`;
 
     document.getElementById("content").innerHTML = html;
