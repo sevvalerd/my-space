@@ -723,13 +723,30 @@ function showHome(){
     customLists.forEach(name => {
 
     html += `
-        <div class="card page-card">
+        <div class="card page-card" style="position:relative;">
 
-            <div class="card-menu">
-                <button onclick="event.stopPropagation(); deleteList('${escapeHTML(name)}')">
-                    ⋯
-                </button>
-            </div>
+            <button
+                onclick="event.stopPropagation(); deleteList('${escapeHTML(name)}')"
+                title="Sayfayı sil"
+                style="
+                    position:absolute;
+                    top:10px;
+                    right:10px;
+                    width:32px;
+                    height:32px;
+                    border:none;
+                    border-radius:8px;
+                    background:transparent;
+                    font-size:17px;
+                    cursor:pointer;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    opacity:0.65;
+                "
+                onmouseover="this.style.opacity='1'; this.style.background='#f3f3f3';"
+                onmouseout="this.style.opacity='0.65'; this.style.background='transparent';"
+            >🗑️</button>
 
             <div onclick="openCategory('${escapeHTML(name)}')">
                 <div class="card-icon">📄</div>
