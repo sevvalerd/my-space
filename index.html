@@ -390,25 +390,40 @@ async function loadUserData() {
 }
 
 async function save() {
-    if (!currentUser) return;
+    if (!currentUser) {
+        console.log("Kullanıcı bulunamadı, kayıt yapılmadı.");
+        return;
+    }
 
     clearTimeout(saveTimer);
 
     saveTimer = setTimeout(async () => {
+
+        const saveData = {
+            data: data,
+            customLists: customLists
+        };
+
         const { error } = await supabaseClient
             .from("user_data")
-            .upsert({
-                user_id: currentUser.id,
-                data: {
-                    data: data,
-                    customLists: customLists
+            .upsert(
+                {
+                    user_id: currentUser.id,
+                    data: saveData,
+                    updated_at: new Date().toISOString()
                 },
-                updated_at: new Date().toISOString()
-            });
+                {
+                    onConflict: "user_id"
+                }
+            );
 
         if (error) {
-            console.error("Veriler kaydedilemedi:", error);
+            console.error("SUPABASE KAYIT HATASI:", error);
+            alert("Veri kaydedilemedi: " + error.message);
+        } else {
+            console.log("Supabase'e başarıyla kaydedildi.");
         }
+
     }, 300);
 }
 
