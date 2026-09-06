@@ -943,6 +943,28 @@ function showHome(){
 
     document.getElementById("content").innerHTML = html;
 }
+
+    function uploadCover(event){
+
+    const file = event.target.files[0];
+
+    if(!file){
+        return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function(e){
+
+        const imageData = e.target.result;
+
+        document.getElementById("homeCover").src = imageData;
+
+    };
+
+    reader.readAsDataURL(file);
+}
+    
 function openCategory(name){
    
     if(name === "Yuvamız"){
