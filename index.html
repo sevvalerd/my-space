@@ -689,6 +689,7 @@ async function loadUserData() {
 
         data = savedData.data || {};
         customLists = savedData.customLists || [];
+        pageIcons = savedData.pageIcons || {};
 
         console.log("Supabase verileri yüklendi:", data);
         console.log("Beyaz Eşya:", data["Beyaz Eşya"]);
@@ -713,9 +714,10 @@ async function save() {
     saveTimer = setTimeout(async () => {
 
         const saveData = {
-            data: data,
-            customLists: customLists
-        };
+    data: data,
+    customLists: customLists,
+    pageIcons: pageIcons
+};
 
         const { error } = await supabaseClient
             .from("user_data")
