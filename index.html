@@ -284,6 +284,25 @@ td input:focus{
     .page-title{
         font-size:27px;
     }
+.icon-option {
+    width: 42px;
+    height: 42px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: white;
+    font-size: 22px;
+    cursor: pointer;
+    transition: 0.15s;
+}
+
+.icon-option:hover {
+    background: #f5f5f5;
+}
+
+.icon-option.selected {
+    border: 2px solid #222;
+    background: #f1f1f1;
+}
 }
 </style>
     
@@ -818,7 +837,7 @@ function showHome(){
             >🗑️</button>
 
             <div onclick="openCategory('${escapeHTML(name)}')">
-                <div class="card-icon">📄</div>
+                <div class="card-icon">${pageIcons[name] || "📄"}</div>
                 <div class="card-name">${escapeHTML(name)}</div>
             </div>
 
