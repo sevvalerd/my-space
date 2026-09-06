@@ -815,6 +815,29 @@ function showHome(){
     html += `
         <div class="card page-card" style="position:relative;">
 
+<button
+    onclick="event.stopPropagation(); editPage('${escapeHTML(name)}')"
+    title="Sayfayı düzenle"
+    style="
+        position:absolute;
+        top:10px;
+        right:48px;
+        width:32px;
+        height:32px;
+        border:none;
+        border-radius:8px;
+        background:transparent;
+        font-size:17px;
+        cursor:pointer;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        opacity:0.65;
+    "
+    onmouseover="this.style.opacity='1'; this.style.background='#f3f3f3';"
+    onmouseout="this.style.opacity='0.65'; this.style.background='transparent';"
+>✏️</button>
+
             <button
                 onclick="event.stopPropagation(); deleteList('${escapeHTML(name)}')"
                 title="Sayfayı sil"
@@ -1182,6 +1205,47 @@ function createList(){
     showHome();
 }
 
+    function editPage(name){
+
+    if(!customLists.includes(name)){
+        return;
+    }
+
+    const newName = prompt("Yeni sayfa adı:", name);
+
+    if(!newName || !newName.trim()){
+        return;
+    }
+
+    const trimmedName = newName.trim();
+
+    if(trimmedName !== name && customLists.includes(trimmedName)){
+        alert("Bu isimde bir sayfa zaten var.");
+        return;
+    }
+
+    const oldIcon = pageIcons[name] || "📄";
+
+    customLists = customLists.map(item =>
+        item === name ? trimmedName : item
+    );
+
+    if(data[name] && trimmedName !== name){
+        data[trimmedName] = data[name];
+        delete data[name];
+    }
+
+    pageIcons[trimmedName] = oldIcon;
+
+    if(trimmedName !== name){
+        delete pageIcons[name];
+    }
+
+    save();
+    updateSidebar();
+    showHome();
+}
+    
 function updateSidebar(){
 
     document.getElementById("customLists").innerHTML =
