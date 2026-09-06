@@ -891,6 +891,7 @@ function openCategory(name){
     `;
 
     document.getElementById("content").innerHTML = html;
+    enableColumnResize();
 }
 
 function addRow(name){
@@ -927,6 +928,62 @@ function deleteRow(name,index){
 
         openCategory(name);
     }
+}
+    function enableColumnResize(){
+
+    const table = document.querySelector(".table-wrap table");
+
+    if(!table) return;
+
+    table.style.tableLayout = "fixed";
+
+    const headers = table.querySelectorAll("thead th");
+
+    headers.forEach(th => {
+
+        th.style.position = "relative";
+
+        const handle = document.createElement("div");
+
+        handle.style.position = "absolute";
+        handle.style.right = "0";
+        handle.style.top = "0";
+        handle.style.width = "6px";
+        handle.style.height = "100%";
+        handle.style.cursor = "col-resize";
+        handle.style.userSelect = "none";
+
+        handle.addEventListener("mousedown", function(e){
+
+            e.preventDefault();
+
+            const startX = e.clientX;
+            const startWidth = th.offsetWidth;
+
+            function resize(e){
+
+                const newWidth = Math.max(
+                    60,
+                    startWidth + (e.clientX - startX)
+                );
+
+                th.style.width = newWidth + "px";
+            }
+
+            function stopResize(){
+
+                document.removeEventListener("mousemove", resize);
+                document.removeEventListener("mouseup", stopResize);
+            }
+
+            document.addEventListener("mousemove", resize);
+            document.addEventListener("mouseup", stopResize);
+
+        });
+
+        th.appendChild(handle);
+
+    });
 }
     function deleteList(name){
 
