@@ -492,6 +492,7 @@ const defaultCategories = [
 
 let data = {};
 let pageIcons = {};
+let coverImage = "";
 let customLists = [];
 
     const NOTION_DATA = {
@@ -733,6 +734,7 @@ async function loadUserData() {
         data = savedData.data || {};
         customLists = savedData.customLists || [];
         pageIcons = savedData.pageIcons || {};
+        coverImage = savedData.cover || "";
 
         console.log("Supabase verileri yüklendi:", data);
         console.log("Beyaz Eşya:", data["Beyaz Eşya"]);
@@ -760,6 +762,7 @@ async function save() {
     data: data,
     customLists: customLists,
     pageIcons: pageIcons
+    cover: coverImage
 };
 
         const { error } = await supabaseClient
@@ -961,6 +964,8 @@ if(coverFile){
     reader.onload = function(e){
 
         const imageData = e.target.result;
+        
+        coverImage = imageData;
 
         document.getElementById("homeCover").src = imageData;
 
