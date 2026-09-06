@@ -334,16 +334,84 @@ td input:focus{
 
 <div class="modal-bg" id="modal">
     <div class="modal">
-        <h2>Yeni liste</h2>
-        <input id="listName" placeholder="Örn. Ev Alışverişi">
+
+        <h2>Yeni Sayfa</h2>
+
+        <div style="margin-bottom:16px;">
+            <div style="font-size:13px; margin-bottom:8px; color:#777;">
+                İkon
+            </div>
+
+            <div id="iconPicker"
+                 style="
+                    display:flex;
+                    flex-wrap:wrap;
+                    gap:8px;
+                 ">
+
+                <button type="button" class="icon-option selected"
+                    onclick="selectPageIcon(this,'📄')">📄</button>
+
+                <button type="button" class="icon-option"
+                    onclick="selectPageIcon(this,'🏠')">🏠</button>
+
+                <button type="button" class="icon-option"
+                    onclick="selectPageIcon(this,'🛋️')">🛋️</button>
+
+                <button type="button" class="icon-option"
+                    onclick="selectPageIcon(this,'🛏️')">🛏️</button>
+
+                <button type="button" class="icon-option"
+                    onclick="selectPageIcon(this,'🍽️')">🍽️</button>
+
+                <button type="button" class="icon-option"
+                    onclick="selectPageIcon(this,'🛒')">🛒</button>
+
+                <button type="button" class="icon-option"
+                    onclick="selectPageIcon(this,'💡')">💡</button>
+
+                <button type="button" class="icon-option"
+                    onclick="selectPageIcon(this,'🪴')">🪴</button>
+
+                <button type="button" class="icon-option"
+                    onclick="selectPageIcon(this,'📚')">📚</button>
+
+                <button type="button" class="icon-option"
+                    onclick="selectPageIcon(this,'💻')">💻</button>
+
+                <button type="button" class="icon-option"
+                    onclick="selectPageIcon(this,'✈️')">✈️</button>
+
+                <button type="button" class="icon-option"
+                    onclick="selectPageIcon(this,'⭐')">⭐</button>
+
+                <button type="button" class="icon-option"
+                    onclick="selectPageIcon(this,'❤️')">❤️</button>
+
+                <button type="button" class="icon-option"
+                    onclick="selectPageIcon(this,'🎯')">🎯</button>
+
+            </div>
+        </div>
+
+        <input
+            id="listName"
+            placeholder="Sayfa adı"
+        >
+
+        <input
+            type="hidden"
+            id="selectedPageIcon"
+            value="📄"
+        >
 
         <div class="modal-actions">
             <button class="btn" onclick="closeModal()">İptal</button>
             <button class="btn primary" onclick="createList()">Oluştur</button>
         </div>
+
     </div>
 </div>
-
 
 <script>
 
@@ -361,6 +429,7 @@ const defaultCategories = [
 ];
 
 let data = {};
+let pageIcons = {};
 let customLists = [];
 
     const NOTION_DATA = {
@@ -997,6 +1066,18 @@ function deleteRow(name,index){
 
     });
 }
+    function selectPageIcon(button, icon){
+
+    document
+        .querySelectorAll("#iconPicker .icon-option")
+        .forEach(btn => {
+            btn.classList.remove("selected");
+        });
+
+    button.classList.add("selected");
+
+    document.getElementById("selectedPageIcon").value = icon;
+}
     function deleteList(name){
 
     if(name === "Yuvamız" || name === "Kamp"){
@@ -1045,13 +1126,31 @@ function createList(){
     let name =
         document.getElementById("listName").value.trim();
 
-    if(!name) return;
+    let icon =
+        document.getElementById("selectedPageIcon").value || "📄";
 
-    if(!customLists.includes(name)){
-        customLists.push(name);
+    if(!name){
+        alert("Lütfen bir sayfa adı yaz.");
+        return;
     }
 
-    if(!data[name]) data[name]=[];
+    if(name === "Yuvamız" || name === "Kamp"){
+        alert("Bu isim kullanılamaz.");
+        return;
+    }
+
+    if(customLists.includes(name)){
+        alert("Bu isimde bir sayfa zaten var.");
+        return;
+    }
+
+    customLists.push(name);
+
+    if(!data[name]){
+        data[name] = [];
+    }
+
+    pageIcons[name] = icon;
 
     save();
 
@@ -1059,7 +1158,7 @@ function createList(){
 
     closeModal();
 
-    openCategory(name);
+    showHome();
 }
 
 function updateSidebar(){
