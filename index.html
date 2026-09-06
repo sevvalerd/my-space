@@ -837,11 +837,11 @@ function showHome(){
             <label class="cover-upload-btn">
                 🖼️ Görsel Ekle
                 <input
-                    type="file"
-                    accept="image/*"
-                    onchange="uploadCover(event)"
-                    hidden
-                >
+    type="file"
+    accept="image/*"
+    id="coverFile"
+    hidden
+>
             </label>
         </div>
 
@@ -942,6 +942,10 @@ function showHome(){
     `;
 
     document.getElementById("content").innerHTML = html;
+    const coverFile = document.getElementById("coverFile");
+
+if(coverFile){
+    coverFile.addEventListener("change", uploadCover);
 }
 
     function uploadCover(event){
