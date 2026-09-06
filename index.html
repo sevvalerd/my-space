@@ -939,9 +939,16 @@ function deleteRow(name,index){
 
     const headers = table.querySelectorAll("thead th");
 
-    headers.forEach(th => {
+    headers.forEach((th, index) => {
 
         th.style.position = "relative";
+
+        const savedWidth =
+            localStorage.getItem("columnWidth_" + index);
+
+        if(savedWidth){
+            th.style.width = savedWidth + "px";
+        }
 
         const handle = document.createElement("div");
 
@@ -971,6 +978,11 @@ function deleteRow(name,index){
             }
 
             function stopResize(){
+
+                localStorage.setItem(
+                    "columnWidth_" + index,
+                    th.offsetWidth
+                );
 
                 document.removeEventListener("mousemove", resize);
                 document.removeEventListener("mouseup", stopResize);
