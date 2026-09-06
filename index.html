@@ -1211,38 +1211,80 @@ function createList(){
         return;
     }
 
-    const newName = prompt("Yeni sayfa adı:", name);
+    const currentIcon = pageIcons[name] || "📄";
 
-    if(!newName || !newName.trim()){
+    document.getElementById("listName").value = name;
+    document.getElementById("selectedPageIcon").value = currentIcon;
+
+    document
+        .querySelectorAll("#iconPicker .icon-option")
+        .forEach(button => {
+
+            if(button.textContent.trim() === currentIcon){
+                button.classList.add("selected");
+            } else {
+                button.classList.remove("selected");
+            }
+
+        });
+
+    document.querySelector("#modal h2").textContent = "Sayfayı Düzenle";
+
+    const createButton =
+        document.querySelector("#modal .btn.primary");
+
+    createButton.textContent = "Kaydet";
+
+    createButton.onclick = function(){
+        saveEditedPage(name);
+    };
+
+    document.getElementById("modal").style.display = "flex";
+}
+
+    function saveEditedPage(oldName){
+
+    const newName =
+        document.getElementById("listName").value.trim();
+
+    const newIcon =
+        document.getElementById("selectedPageIcon").value || "📄";
+
+    if(!newName){
+        alert("Lütfen bir sayfa adı yaz.");
         return;
     }
 
-    const trimmedName = newName.trim();
-
-    if(trimmedName !== name && customLists.includes(trimmedName)){
+    if(
+        newName !== oldName &&
+        customLists.includes(newName)
+    ){
         alert("Bu isimde bir sayfa zaten var.");
         return;
     }
 
-    const oldIcon = pageIcons[name] || "📄";
-
     customLists = customLists.map(item =>
-        item === name ? trimmedName : item
+        item === oldName ? newName : item
     );
 
-    if(data[name] && trimmedName !== name){
-        data[trimmedName] = data[name];
-        delete data[name];
-    }
+    if(newName !== oldName){
 
-    pageIcons[trimmedName] = oldIcon;
+        if(data[oldName]){
+            data[newName] = data[oldName];
+            delete data[oldName];
+        }
 
-    if(trimmedName !== name){
-        delete pageIcons[name];
+        pageIcons[newName] = newIcon;
+        delete pageIcons[oldName];
+
+    } else {
+
+        pageIcons[newName] = newIcon;
     }
 
     save();
     updateSidebar();
+    closeModal();
     showHome();
 }
     
