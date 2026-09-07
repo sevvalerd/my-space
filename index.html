@@ -1098,7 +1098,6 @@ function openCategory(name){
                 <td>
                     <input
                         value="${escapeHTML(row.product||"")}"
-                        placeholder="Ürün adı"
                         onchange="updateRow('${name}',${i},'product',this.value)"
                     >
                 </td>
@@ -1108,7 +1107,6 @@ function openCategory(name){
                         type="number"
                         min="0"
                         value="${row.qty||""}"
-                        placeholder="1"
                         onchange="updateRow('${name}',${i},'qty',this.value)"
                     >
                 </td>
@@ -1116,7 +1114,6 @@ function openCategory(name){
                 <td>
                     <input
                         value="${escapeHTML(row.note||"")}"
-                        placeholder="Açıklama"
                         onchange="updateRow('${name}',${i},'note',this.value)"
                     >
                 </td>
@@ -1124,15 +1121,13 @@ function openCategory(name){
                 <td>
                     <input
                         value="${escapeHTML(row.brand||"")}"
-                        placeholder="Marka"
                         onchange="updateRow('${name}',${i},'brand',this.value)"
                     >
                 </td>
 
                 <td>
                     <input
-                        value="${escapeHTML(row.link||"")}"
-                        placeholder="https://..."
+                        value="${escapeHTML(row.link||"")}"         
                         onchange="updateRow('${name}',${i},'link',this.value)"
                     >
                 </td>
