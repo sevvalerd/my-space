@@ -839,6 +839,20 @@ function showYuvamiz(){
 
     document.getElementById("content").innerHTML = html;
 }
+
+    async function logoutUser(){
+
+    const { error } = await supabaseClient.auth.signOut();
+
+    if(error){
+        console.error("Çıkış hatası:", error);
+        alert("Çıkış yapılamadı.");
+        return;
+    }
+
+    currentUser = null;
+    showLoginScreen();
+}
     
 function showHome(){
 
