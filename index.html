@@ -990,6 +990,60 @@ function showHome(){
 
 });
 
+    customPages.forEach(name => {
+
+    html += `
+        <div class="card page-card" style="position:relative;">
+
+            <button
+                onclick="event.stopPropagation(); editPage('${escapeHTML(name)}')"
+                title="Sayfayı düzenle"
+                style="
+                    position:absolute;
+                    top:10px;
+                    right:48px;
+                    width:32px;
+                    height:32px;
+                    border:none;
+                    border-radius:8px;
+                    background:transparent;
+                    font-size:17px;
+                    cursor:pointer;
+                "
+            >✏️</button>
+
+            <button
+                onclick="event.stopPropagation(); deletePage('${escapeHTML(name)}')"
+                title="Sayfayı sil"
+                style="
+                    position:absolute;
+                    top:10px;
+                    right:10px;
+                    width:32px;
+                    height:32px;
+                    border:none;
+                    border-radius:8px;
+                    background:transparent;
+                    font-size:17px;
+                    cursor:pointer;
+                "
+            >🗑️</button>
+
+            <div onclick="openPage('${escapeHTML(name)}')">
+                <div class="card-icon">
+                    ${pageIcons[name] || "📄"}
+                </div>
+
+                <div class="card-name">
+                    ${escapeHTML(name)}
+                </div>
+            </div>
+
+        </div>
+    `;
+
+});
+
     html += `
         </div>
     `;
