@@ -1464,10 +1464,33 @@ function openPage(name){
             border-radius:12px;
             padding:30px;
         ">
+        <div
+    contenteditable="true"
+    id="pageEditor"
+    style="
+        min-height:440px;
+        outline:none;
+        font-size:16px;
+        line-height:1.7;
+        color:#333;
+    "
+    oninput="savePageContent('${escapeHTML(name)}', this.innerHTML)"
+>${pageContents[name] || ""}</div>
         </div>
     `;
 
     document.getElementById("content").innerHTML = html;
+}
+
+    function openPage(name) {
+
+    // ... openPage kodların ...
+
+}
+
+function savePageContent(name, content) {
+    pageContents[name] = content;
+    save();
 }
     
 function openAddList(){
