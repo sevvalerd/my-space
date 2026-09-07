@@ -1041,7 +1041,7 @@ function showHome(){
     class="card dashboard-card"
     data-dashboard-key="yuvamiz"
     onclick="openCategory('Yuvamız')"
-    style="grid-column:span 3; grid-row:span 3;"
+  style="grid-column:1 / span 3; grid-row:1 / span 3;"
 >
            
            <div class="drag-handle" title="Taşımak için sürükle">⠿</div>
@@ -1235,28 +1235,119 @@ function showHome(){
 
     document.getElementById("content").innerHTML = html;
         const dashboardCards = document.querySelectorAll(".dashboard-card");
+const dashboardCards = document.querySelectorAll(".dashboard-card");
 
-    dashboardCards.forEach(card => {
+dashboardCards.forEach(card => {
 
-        const key = card.dataset.dashboardKey;
+    const handle = card.querySelector(".drag-handle");
 
-        if (
-            key &&
-            dashboardLayout[key]
-        ) {
-            card.style.gridColumnStart =
-                dashboardLayout[key].column;
+    if (!handle) return;
 
-            card.style.gridRowStart =
-                dashboardLayout[key].row;
+    const key = card.dataset.dashboardKey;
 
-            card.dataset.column =
-                dashboardLayout[key].column;
+    if (!key) return;
 
-            card.dataset.row =
-                dashboardLayout[key].row;
-        }
+    let startX = 0;
+    let startY = 0;
+    let startColumn = 1;
+    let startRow = 1;
+    let dragging = false;
+
+    handle.addEventListener("pointerdown", function(e) {
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        dragging = true;
+
+        startX = e.clientX;
+        startY = e.clientY;
+
+        startColumn =
+            parseInt(card.dataset.column || "1");
+
+        startRow =
+            parseInt(card.dataset.row || "1");
+
+        handle.setPointerCapture(e.pointerId);
+
+        card.style.zIndex = "100";
+        card.style.opacity = "0.8";
     });
+
+    handle.addEventListener("pointermove", function(e) {
+
+        if (!dragging) return;
+
+        const container = card.parentElement;
+        const rect = container.getBoundingClientRect();
+
+        const gap = 14;
+        const columns = 12;
+
+        const columnWidth =
+            (rect.width - gap * (columns - 1)) / columns;
+
+        const cellWidth = columnWidth + gap;
+        const cellHeight = 40 + gap;
+
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+
+        const columnMove =
+            Math.round(dx / cellWidth);
+
+        const rowMove =
+            Math.round(dy / cellHeight);
+
+        const newColumn =
+            Math.max(
+                1,
+                Math.min(
+                    10,
+                    startColumn + columnMove
+                )
+            );
+
+        const newRow =
+            Math.max(
+                1,
+                startRow + rowMove
+            );
+
+        card.style.gridColumnStart = newColumn;
+        card.style.gridRowStart = newRow;
+
+        card.dataset.column = newColumn;
+        card.dataset.row = newRow;
+    });
+
+    handle.addEventListener("pointerup", function(e) {
+
+        if (!dragging) return;
+
+        dragging = false;
+
+        card.style.zIndex = "";
+        card.style.opacity = "";
+
+        const column =
+            parseInt(card.dataset.column || "1");
+
+        const row =
+            parseInt(card.dataset.row || "1");
+
+        dashboardLayout[key] = {
+            column: column,
+            row: row
+        };
+
+        saveDashboardLayout();
+
+        handle.releasePointerCapture(e.pointerId);
+    });
+
+});
 
         const handle = card.querySelector(".drag-handle");
 
