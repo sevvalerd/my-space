@@ -40,6 +40,12 @@ button{cursor:pointer}
     letter-spacing:-.5px;
 }
 
+.current-user{
+    margin:-15px 10px 22px;
+    font-size:13px;
+    color:#888;
+}
+
 .nav-title{
     font-size:11px;
     color:#999;
@@ -1689,6 +1695,9 @@ function showAuthenticatedApp(user){
     document.querySelector(".app").style.display = "flex";
 
     console.log("Giriş yapan kullanıcı:", user.email);
+    
+    const userName = user.email === "shewal@hotmail.com.tr" ? "Şevval" : "Berat";
+document.getElementById("currentUserName").textContent = userName;
 
     showHome();
 }
