@@ -1539,11 +1539,11 @@ showHome();
             Kişisel alanına giriş yap
         </div>
 
-        <input
-            type="email"
-            id="authEmail"
-            placeholder="E-posta adresin"
-            autocomplete="email"
+       <select id="authUser">
+    <option value="">Kullanıcı seç</option>
+    <option value="sevval">Şevval</option>
+    <option value="berat">Berat</option>
+</select>
         >
 
         <input
@@ -1614,14 +1614,45 @@ function toggleAuthMode(){
 
 async function handleAuth(){
 
-    const email =
-        document.getElementById("authEmail").value.trim();
+   async function handleAuth(){
+
+    const user =
+        document.getElementById("authUser").value;
 
     const password =
         document.getElementById("authPassword").value;
 
     const message =
         document.getElementById("authMessage");
+
+    if(!user || !password){
+        message.textContent = "Lütfen kullanıcı ve şifre seç.";
+        return;
+    }
+
+    const accounts = {
+        sevval: "sheval@hotmail.com.tr",
+        berat: "berat.erkadam123@gmail.com"
+    };
+
+    const email = accounts[user];
+
+    message.textContent = "Giriş yapılıyor...";
+
+    const { data, error } =
+        await supabaseClient.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
+
+    if(error){
+        message.textContent = "Şifre hatalı veya giriş yapılamadı.";
+        console.error(error);
+        return;
+    }
+
+    console.log("Giriş başarılı:", user);
+}
 
     if(!email || !password){
 
