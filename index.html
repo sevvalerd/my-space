@@ -792,36 +792,35 @@ async function save() {
 
     saveTimer = setTimeout(async () => {
 
-    const saveData = {
-    data: data,
-    customLists: customLists,
-    customPages: customPages,
-    pageIcons: pageIcons,
-    pageContents: pageContents,
-    cover: coverImage
-};
+        const saveData = {
+            data: data,
+            customLists: customLists,
+            customPages: customPages,
+            pageIcons: pageIcons,
+            pageContents: pageContents,
+            cover: coverImage
+        };
 
         const { error } = await supabaseClient
             .from("shared_data")
-.upsert(
-    {
-        id: 1,
-        data: saveData,
-        updated_at: new Date().toISOString()
-    },
-    {
-        onConflict: "id"
-    }
-);
+            .upsert(
+                {
+                    id: 1,
+                    data: saveData,
+                    updated_at: new Date().toISOString()
+                },
+                {
+                    onConflict: "id"
+                }
+            );
 
         if (error) {
             console.error("SUPABASE KAYIT HATASI:", error);
-            alert("Veri kaydedilemedi: " + error.message);
         } else {
-            console.log("Supabase'e başarıyla kaydedildi.");
+            console.log("Sayfa başarıyla kaydedildi.");
         }
 
-    }, 300);
+    }, 800);
 }
 
 function showYuvamiz(){
@@ -1484,7 +1483,40 @@ function openPage(name){
 
 function savePageContent(name, content) {
     pageContents[name] = content;
-    save();
+
+    clearTimeout(saveTimer);
+
+    saveTimer = setTimeout(async () => {
+
+        const saveData = {
+            data: data,
+            customLists: customLists,
+            customPages: customPages,
+            pageIcons: pageIcons,
+            pageContents: pageContents,
+            cover: coverImage
+        };
+
+        const { error } = await supabaseClient
+            .from("shared_data")
+            .upsert(
+                {
+                    id: 1,
+                    data: saveData,
+                    updated_at: new Date().toISOString()
+                },
+                {
+                    onConflict: "id"
+                }
+            );
+
+        if (error) {
+            console.error("SAYFA KAYIT HATASI:", error);
+        } else {
+            console.log("Sayfa kaydedildi.");
+        }
+
+    }, 800);
 }
     
 function openAddList(){
