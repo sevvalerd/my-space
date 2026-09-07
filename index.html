@@ -863,7 +863,7 @@ function showHome(){
         <img
             id="homeCover"
             class="home-cover"
-            src=""
+            src="${coverImage || ""}"
             alt="Kapak görseli"
         >
 
@@ -999,6 +999,7 @@ if(coverFile){
         coverImage = imageData;
 
         document.getElementById("homeCover").src = imageData;
+        save();
 
     };
 
