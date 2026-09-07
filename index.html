@@ -717,10 +717,9 @@ async function loadUserData() {
     if (!currentUser) return;
 
     const { data: result, error } = await supabaseClient
-        .from("user_data")
-        .select("data")
-        .eq("user_id", currentUser.id)
-        .maybeSingle();
+    .from("shared_data")
+    .select("data")
+    .maybeSingle();
 
     if (error) {
         console.error("Veriler yüklenemedi:", error);
