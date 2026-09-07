@@ -840,7 +840,7 @@ function showYuvamiz(){
     document.getElementById("content").innerHTML = html;
 }
 
-    async function logoutUser(){
+  window.logoutUser = async function(){
 
     const { error } = await supabaseClient.auth.signOut();
 
