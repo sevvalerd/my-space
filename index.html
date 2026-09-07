@@ -730,7 +730,7 @@ console.log("CURRENT USER:", currentUser);
     
 let saveTimer = null;
 
-async function loadUserData() {
+window.loadUserData = async function() {
 
     if (!currentUser) return;
 
