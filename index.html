@@ -982,7 +982,7 @@ if(coverFile){
     coverFile.addEventListener("change", uploadCover);
 }
 
-    function uploadCover(event){
+   async function uploadCover(event){
 
     const file = event.target.files[0];
 
@@ -996,10 +996,36 @@ if(coverFile){
 
         const imageData = e.target.result;
         
-        coverImage = imageData;
+       coverImage = imageData;
 
-        document.getElementById("homeCover").src = imageData;
-        save();
+document.getElementById("homeCover").src = imageData;
+
+const saveData = {
+    data: data,
+    customLists: customLists,
+    pageIcons: pageIcons,
+    cover: coverImage
+};
+
+const { error } = await supabaseClient
+    .from("shared_data")
+    .upsert(
+        {
+            id: 1,
+            data: saveData,
+            updated_at: new Date().toISOString()
+        },
+        {
+            onConflict: "id"
+        }
+    );
+
+if (error) {
+    console.error("Cover kaydetme hatası:", error);
+    alert("Kapak kaydedilemedi.");
+} else {
+    console.log("Kapak başarıyla kaydedildi.");
+}
 
     };
 
