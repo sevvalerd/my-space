@@ -748,9 +748,9 @@ async function loadUserData() {
     if (!currentUser) return;
 
     const { data: result, error } = await supabaseClient
-    .from("shared_data")
-    .select("data")
-    .maybeSingle();
+        .from("shared_data")
+        .select("data")
+        .maybeSingle();
 
     if (error) {
         console.error("Veriler yüklenemedi:", error);
@@ -762,19 +762,21 @@ async function loadUserData() {
         const savedData = result.data;
 
         data = savedData.data || {};
-customLists = savedData.customLists || [];
-customPages = savedData.customPages || [];
-pageIcons = savedData.pageIcons || {};
-pageContents = savedData.pageContents || {};
-coverImage = savedData.cover || "";
+        customLists = savedData.customLists || [];
+        customPages = savedData.customPages || [];
+        pageIcons = savedData.pageIcons || {};
+        pageContents = savedData.pageContents || {};
+        coverImage = savedData.cover || "";
 
         console.log("Supabase verileri yüklendi:", data);
-        console.log("Beyaz Eşya:", data["Beyaz Eşya"]);
 
     } else {
 
         data = {};
         customLists = [];
+        customPages = [];
+        pageIcons = {};
+        pageContents = {};
 
         console.log("Kullanıcı için kayıtlı veri bulunamadı.");
     }
