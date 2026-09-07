@@ -420,6 +420,61 @@ td input:focus{
 
 </div>
 
+    <!-- EMBED MODAL -->
+
+<div class="modal-bg" id="embedModal">
+
+    <div class="modal">
+
+        <h2>Embed Ekle</h2>
+
+        <div style="
+            font-size:13px;
+            color:#777;
+            margin-bottom:6px;
+        ">
+            Başlık
+        </div>
+
+        <input
+            id="embedTitle"
+            placeholder="Örn. Pinterest İlham"
+        >
+
+        <div style="
+            font-size:13px;
+            color:#777;
+            margin-bottom:6px;
+        ">
+            Embed linki
+        </div>
+
+        <input
+            id="embedUrl"
+            placeholder="https://..."
+        >
+
+        <div class="modal-actions">
+
+            <button
+                class="btn"
+                onclick="closeEmbedModal()"
+            >
+                İptal
+            </button>
+
+            <button
+                class="btn primary"
+                onclick="createEmbed()"
+            >
+                Ekle
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
 
 <!-- ADD LIST MODAL -->
 
@@ -525,6 +580,7 @@ let coverImage = "";
 let customLists = [];
 let customPages = [];
 let pageContents = {};
+let embeds = [];
 
     const NOTION_DATA = {
     "Beyaz Eşya": [
@@ -766,6 +822,7 @@ async function loadUserData() {
         customPages = savedData.customPages || [];
         pageIcons = savedData.pageIcons || {};
         pageContents = savedData.pageContents || {};
+        embeds = savedData.embeds || [];
         coverImage = savedData.cover || "";
 
         console.log("Supabase verileri yüklendi:", data);
@@ -777,6 +834,7 @@ async function loadUserData() {
         customPages = [];
         pageIcons = {};
         pageContents = {};
+        embeds = [];
 
         console.log("Kullanıcı için kayıtlı veri bulunamadı.");
     }
@@ -792,14 +850,15 @@ async function save() {
 
     saveTimer = setTimeout(async () => {
 
-        const saveData = {
-            data: data,
-            customLists: customLists,
-            customPages: customPages,
-            pageIcons: pageIcons,
-            pageContents: pageContents,
-            cover: coverImage
-        };
+       const saveData = {
+    data: data,
+    customLists: customLists,
+    customPages: customPages,
+    pageIcons: pageIcons,
+    pageContents: pageContents,
+    embeds: embeds,
+    cover: coverImage
+};
 
         const { error } = await supabaseClient
             .from("shared_data")
@@ -906,6 +965,7 @@ function showHome(){
 
             <div class="top-actions">
                 <button class="btn" onclick="openAddPage()">＋ Yeni Sayfa</button>
+                <button class="btn" onclick="openAddEmbed()">＋ Embed Ekle</button>
             </div>
         </div>
 
@@ -983,6 +1043,57 @@ function showHome(){
                 <div class="card-icon">${pageIcons[name] || "📄"}</div>
                 <div class="card-name">${escapeHTML(name)}</div>
             </div>
+
+        </div>
+    `;
+
+});
+
+    embeds.forEach((embed, index) => {
+
+    html += `
+        <div style="
+            background:#fff;
+            border:1px solid #e8e8e5;
+            border-radius:12px;
+            padding:18px;
+            margin-bottom:20px;
+            position:relative;
+        ">
+
+            <button
+                onclick="deleteEmbed(${index})"
+                title="Embed'i sil"
+                style="
+                    position:absolute;
+                    top:12px;
+                    right:12px;
+                    border:none;
+                    background:transparent;
+                    font-size:17px;
+                    cursor:pointer;
+                "
+            >🗑️</button>
+
+            <div style="
+                font-size:16px;
+                font-weight:600;
+                margin-bottom:14px;
+            ">
+                ${escapeHTML(embed.title)}
+            </div>
+
+            <iframe
+                src="${escapeHTML(embed.url)}"
+                style="
+                    width:100%;
+                    height:500px;
+                    border:none;
+                    border-radius:8px;
+                    background:#f5f5f5;
+                "
+                loading="lazy"
+            ></iframe>
 
         </div>
     `;
@@ -1971,6 +2082,69 @@ supabaseClient.auth.onAuthStateChange(
 );
 
 checkAuth();
+
+function openAddEmbed(){
+
+    document.getElementById("embedTitle").value = "";
+    document.getElementById("embedUrl").value = "";
+
+    document.getElementById("embedModal").style.display = "flex";
+
+    document.getElementById("embedTitle").focus();
+}
+
+
+function closeEmbedModal(){
+
+    document.getElementById("embedModal").style.display = "none";
+
+}
+
+
+function createEmbed(){
+
+    const title =
+        document.getElementById("embedTitle").value.trim();
+
+    const url =
+        document.getElementById("embedUrl").value.trim();
+
+    if(!title){
+        alert("Lütfen embed için bir başlık yaz.");
+        return;
+    }
+
+    if(!url){
+        alert("Lütfen embed linkini gir.");
+        return;
+    }
+
+    embeds.push({
+        title: title,
+        url: url
+    });
+
+    save();
+
+    closeEmbedModal();
+
+    showHome();
+}
+
+
+function deleteEmbed(index){
+
+    if(!confirm("Bu embed'i silmek istediğine emin misin?")){
+        return;
+    }
+
+    embeds.splice(index, 1);
+
+    save();
+
+    showHome();
+}
+
 </script>
     
 </body>
