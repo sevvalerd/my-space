@@ -1716,6 +1716,15 @@ function showAuthenticatedApp(user){
 
     showHome();
 }
+
+    function showLoginScreen(){
+
+    document.getElementById("loginScreen").style.display = "flex";
+
+    document.querySelector(".app").style.display = "none";
+
+}
+    
 async function checkAuth() {
     const { data: { session } } = await supabaseClient.auth.getSession();
 
